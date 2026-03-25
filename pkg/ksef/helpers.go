@@ -2,13 +2,13 @@ package ksef
 
 import (
 	"context"
-	"net/http"
-	"fmt"
 	"crypto/rand"
-	"crypto/x509"
-	"crypto/sha256"
 	"crypto/rsa"
+	"crypto/sha256"
+	"crypto/x509"
+	"fmt"
 	"log/slog"
+	"net/http"
 
 	"github.com/torgiren/ksef-cli/internal/ksefapi"
 )

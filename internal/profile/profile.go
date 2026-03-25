@@ -2,8 +2,8 @@ package profile
 
 import (
 	"encoding/json"
-	"gopkg.in/yaml.v3"
 	"fmt"
+	"gopkg.in/yaml.v3"
 	"log/slog"
 	"os"
 	"path/filepath"
@@ -12,13 +12,13 @@ import (
 )
 
 type Config struct {
-	CurrentProfile string `yaml:"currentProfile"`
-	Profiles map[string]Profile `yaml:"profiles"`
+	CurrentProfile string             `yaml:"currentProfile"`
+	Profiles       map[string]Profile `yaml:"profiles"`
 }
 
 type Profile struct {
-	Nip string `yaml:"nip"`
-	Api string `yaml:"api"`
+	Nip  string `yaml:"nip"`
+	Api  string `yaml:"api"`
 	Name string `yaml:"name"`
 }
 

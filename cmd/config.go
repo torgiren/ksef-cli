@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 )
 
-
 func initConfig() {
 	verbosity, err := rootCmd.PersistentFlags().GetCount("verbose")
 	if err != nil {

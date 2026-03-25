@@ -71,8 +71,6 @@ var loginCmd = &cobra.Command{
 		}
 		slog.Info("config saved", "currentProfile", config.CurrentProfile, "profilesCount", len(config.Profiles))
 
-
-
 		//if err = viper.WriteConfig(); err != nil {
 		//	fmt.Fprintln(os.Stderr, "Błąd zapisywania konfiguracji:", err)
 		//	slog.Error("writing config failed", "err", err)

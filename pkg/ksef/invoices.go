@@ -19,8 +19,6 @@ type Invoice struct {
 	SellerName           string    `json:"seller_name"`
 }
 
-
-
 func (c *ksefClient) GetInvoices(ctx context.Context, query InvoiceQuery, page InvoicePage) ([]Invoice, error) {
 	tokens := c.GetTokens()
 	if tokens == nil || tokens.AccessToken == "" {
@@ -38,7 +36,7 @@ func (c *ksefClient) GetInvoices(ctx context.Context, query InvoiceQuery, page I
 		},
 	}
 	apiParams := &ksefapi.PostInvoicesQueryMetadataParams{
-		PageSize: &page.PageSize,
+		PageSize:   &page.PageSize,
 		PageOffset: &page.PageOffset,
 	}
 	slog.Debug("querying invoices", "from", from, "to", to, "pageSize", page.PageSize)

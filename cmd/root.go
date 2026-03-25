@@ -2,22 +2,22 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"os"
-	"fmt"
 
 	"github.com/spf13/cobra"
 	//"github.com/spf13/viper"
 
-	"github.com/torgiren/ksef-cli/pkg/ksef"
 	"github.com/torgiren/ksef-cli/internal/profile"
+	"github.com/torgiren/ksef-cli/pkg/ksef"
 )
 
 var (
-	client  ksef.Client
+	client ksef.Client
 	//nip     string
-	ctx     context.Context
-	config  profile.Config
+	ctx            context.Context
+	config         profile.Config
 	currentProfile profile.Profile
 )
 
@@ -54,7 +54,6 @@ API testowe:     https://api-test.ksef.mf.gov.pl/v2`,
 		}
 
 		slog.Debug("pre-run check", "command", cmd.Name(), "parent", cmd.Parent().Name())
-
 
 		if cmd.Annotations["NipRequired"] == "true" {
 			slog.Debug("NIP is required for this command")
