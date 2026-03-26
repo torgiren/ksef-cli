@@ -1,0 +1,119 @@
+<div align="center">
+
+<img src="https://www.podatki.gov.pl/assets/logoPodatki.svg" alt="podatki.gov.pl" height="40"/>
+
+# ksef-cli
+
+**Tekstowy klient wiersza poleceń dla Krajowego Systemu e-Faktur**
+
+[![Build](https://github.com/torgiren/ksef-cli/actions/workflows/go.yml/badge.svg)](https://github.com/torgiren/ksef-cli/actions/workflows/go.yml)
+[![Release](https://github.com/torgiren/ksef-cli/actions/workflows/release.yml/badge.svg)](https://github.com/torgiren/ksef-cli/actions/workflows/release.yml)
+[![Go](https://img.shields.io/badge/Go-1.25+-00ADD8?logo=go&logoColor=white)](https://go.dev/)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
+[![KSeF](https://img.shields.io/badge/KSeF-API_v2-013f71)](https://www.podatki.gov.pl/ksef/)
+
+</div>
+
+---
+
+Nieoficjalny klient CLI dla [Krajowego Systemu e-Faktur (KSeF)](https://www.podatki.gov.pl/ksef/) — polskiego systemu faktur elektronicznych Ministerstwa Finansów.
+
+## Co potrafi
+
+| | Funkcja |
+|--|---------|
+| ✅ | **Logowanie** do KSeF przy użyciu NIP-u i tokenu KSeF |
+| ✅ | **Zarządzanie profilami** — przechowywanie wielu konfiguracji (różne firmy/NIP-y) |
+| ✅ | **Automatyczne odświeżanie tokenów** — tokeny są cachowane i odświeżane bez ponownego logowania |
+| ✅ | **Listowanie faktur** — pobieranie listy faktur z ostatniego miesiąca z paginacją |
+| ✅ | **Wiele formatów wyjścia** — tekst (domyślnie) lub JSON |
+| ✅ | **Poziomy logowania** — od cichego do pełnego podglądu żądań API (`-v` / `-vv` / `-vvv`) |
+
+## Czego jeszcze nie potrafi
+
+| | Funkcja |
+|--|---------|
+| ❌ | **Pobieranie plików faktur** — dostępna jest tylko lista metadanych, nie da się pobrać faktury jako XML/PDF |
+| ❌ | **Wysyłanie faktur** — brak możliwości przesłania nowej faktury do KSeF |
+| ❌ | **Zarządzanie profilami z poziomu CLI** — `profile list`, `profile set` i `profile delete` są niezaimplementowane |
+| ❌ | **Filtrowanie faktur** — lista zawsze obejmuje ostatni miesiąc; brak możliwości podania własnego zakresu dat |
+| ❌ | **Operacje wsadowe** |
+
+## Instalacja
+
+### Pobranie gotowego binarki
+
+Pliki binarne dla Linux, macOS i Windows dostępne są w [Releases](../../releases).
+
+### Budowanie ze źródeł
+
+Wymagany Go 1.25+.
+
+```bash
+git clone https://github.com/torgiren/ksef-cli
+cd ksef-cli
+make build
+```
+
+Binarka `ksef-cli` pojawi się w bieżącym katalogu.
+
+## Konfiguracja
+
+Plik konfiguracyjny tworzony jest automatycznie przy pierwszym logowaniu:
+
+- **Konfiguracja:** `~/.config/ksef-cli/config.yaml`
+- **Cache tokenów:** `~/.cache/ksef-cli/profile_<nazwa>.json`
+
+## Użycie
+
+### Logowanie
+
+```bash
+# Pierwsze logowanie — tworzy profil i cachuje tokeny
+ksef-cli login --profile moja-firma --nip 1234567890 --token <token_ksef> --save-token
+
+# Ponowne logowanie używa zapisanego tokenu KSeF
+ksef-cli login --profile moja-firma
+```
+
+Token KSeF można wygenerować w portalu podatnika lub pobrać z konta biura rachunkowego.
+
+### Listowanie faktur
+
+```bash
+# Lista faktur (ostatni miesiąc)
+ksef-cli invoice list --profile moja-firma
+
+# Wyjście w formacie JSON
+ksef-cli invoice list --profile moja-firma --output json
+```
+
+Przykładowe wyjście tekstowe:
+```
+Invoice: FA/2024/001, Date: 2024-02-15, Gross: 1230.00, Net: 1000.00, Seller: ABC Sp. z o.o.
+Invoice: FA/2024/002, Date: 2024-02-20, Gross: 615.00,  Net: 500.00,  Seller: XYZ S.A.
+```
+
+### Flagi globalne
+
+| Flaga | Domyślna wartość | Opis |
+|-------|-----------------|------|
+| `--profile` |  | Nazwa profilu do użycia |
+| `--nip` |  | Nadpisuje NIP z profilu |
+| `--output` | `text` | Format wyjścia: `text` lub `json` |
+| `--test` | `false` | Używa środowiska testowego KSeF |
+| `-a, --api` | `https://api.ksef.mf.gov.pl/v2` | Adres API KSeF |
+| `--cache-dir` | `~/.cache/ksef-cli` | Katalog na cache tokenów |
+| `--configFile` | `~/.config/ksef-cli/config.yaml` | Ścieżka do pliku konfiguracyjnego |
+| `-v` |  | Poziom logowania: `-v` INFO, `-vv` DEBUG, `-vvv` TRACE, `-vvvv` SECRET |
+
+### Środowisko testowe
+
+```bash
+ksef-cli login --test --profile test-firma --nip 1234567890 --token <token>
+ksef-cli invoice list --test --profile test-firma
+```
+
+## Licencja
+
+[GNU AGPL v3](LICENSE)
