@@ -70,6 +70,7 @@ func loadAndRefreshTokens(cmd *cobra.Command) error {
 		return nil
 	}
 
+	slog.Debug("checking access token expiry", "accessTokenExpiry", tokens.AccessTokenExpiry, "currentTime", time.Now())
 	if tokens.AccessTokenExpiry.Before(time.Now()) {
 		slog.Warn("access token expired, refreshing")
 		if _, err := client.RefreshTokens(ctx); err != nil {
@@ -77,6 +78,7 @@ func loadAndRefreshTokens(cmd *cobra.Command) error {
 			return fmt.Errorf("error refreshing tokens: %w", err)
 		}
 		slog.Info("access token refreshed")
+		profile.SaveTokens(currentProfile.Name, client.GetTokens(), cacheDir)
 		//profile.SaveTokens(viper.GetString("currentNip"), client.GetTokens(), cacheDir)
 	}
 
