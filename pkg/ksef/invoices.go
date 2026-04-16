@@ -19,27 +19,39 @@ type Invoice struct {
 	SellerName           string    `json:"seller_name"`
 }
 
+func subjectTypeToAPI(subjectType SubjectType) ksefapi.InvoiceQuerySubjectType {
+	switch subjectType {
+	case Subject1:
+		return ksefapi.Subject1
+	case Subject2:
+		return ksefapi.Subject2
+	case Subject3:
+		return ksefapi.Subject3
+	case SubjectAuthorized:
+		return ksefapi.SubjectAuthorized
+	default:
+		return ksefapi.Subject2
+	}
+}
+
 func (c *ksefClient) GetInvoices(ctx context.Context, query InvoiceQuery, page InvoicePage) ([]Invoice, error) {
 	tokens := c.GetTokens()
 	if tokens == nil || tokens.AccessToken == "" {
 		return nil, fmt.Errorf("no access token available, please login first")
 	}
 	accessToken := tokens.AccessToken
-	from := time.Now().AddDate(0, -1, 0)
-	to := time.Now()
 	apiQuery := ksefapi.PostInvoicesQueryMetadataJSONRequestBody{
-		SubjectType: "Subject2",
+		SubjectType: subjectTypeToAPI(query.SubjectType),
 		DateRange: ksefapi.InvoiceQueryDateRange{
 			DateType: "PermanentStorage",
-			From:     from,
-			To:       &to,
+			From:     query.From,
+			To:       &query.To,
 		},
 	}
 	apiParams := &ksefapi.PostInvoicesQueryMetadataParams{
 		PageSize:   &page.PageSize,
 		PageOffset: &page.PageOffset,
 	}
-	slog.Debug("querying invoices", "from", from, "to", to, "pageSize", page.PageSize)
 	slog.Log(ctx, LevelTrace, "API query body", "query", apiQuery, "params", apiParams)
 	slog.Log(ctx, LevelSecret, "access token for invoices", "token", accessToken)
 	invoices, err := c.api.PostInvoicesQueryMetadataWithResponse(ctx, apiParams, apiQuery, bearerTokenFn(accessToken))

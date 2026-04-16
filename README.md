@@ -25,7 +25,7 @@ Nieoficjalny klient CLI dla [Krajowego Systemu e-Faktur (KSeF)](https://www.poda
 | ✅ | **Logowanie** do KSeF przy użyciu NIP-u i tokenu KSeF |
 | ✅ | **Zarządzanie profilami** — przechowywanie wielu konfiguracji (różne firmy/NIP-y) |
 | ✅ | **Automatyczne odświeżanie tokenów** — tokeny są cachowane i odświeżane bez ponownego logowania |
-| ✅ | **Listowanie faktur** — pobieranie listy faktur z ostatniego miesiąca z paginacją |
+| ✅ | **Listowanie faktur** — pobieranie listy faktur z KSeF (domyślnie ostatnie 3 miesiące) |
 | ✅ | **Wiele formatów wyjścia** — tekst (domyślnie) lub JSON |
 | ✅ | **Poziomy logowania** — od cichego do pełnego podglądu żądań API (`-v` / `-vv` / `-vvv`) |
 
@@ -36,7 +36,6 @@ Nieoficjalny klient CLI dla [Krajowego Systemu e-Faktur (KSeF)](https://www.poda
 | ❌ | **Pobieranie plików faktur** — dostępna jest tylko lista metadanych, nie da się pobrać faktury jako XML/PDF |
 | ❌ | **Wysyłanie faktur** — brak możliwości przesłania nowej faktury do KSeF |
 | ❌ | **Zarządzanie profilami z poziomu CLI** — `profile list`, `profile set` i `profile delete` są niezaimplementowane |
-| ❌ | **Filtrowanie faktur** — lista zawsze obejmuje ostatni miesiąc; brak możliwości podania własnego zakresu dat |
 | ❌ | **Operacje wsadowe** |
 
 ## Instalacja
@@ -81,11 +80,20 @@ Token KSeF można wygenerować w portalu podatnika lub pobrać z konta biura rac
 ### Listowanie faktur
 
 ```bash
-# Lista faktur (ostatni miesiąc)
+# Lista faktur (ostatnie 3 miesiące)
 ksef-cli invoice list --profile moja-firma
 
 # Wyjście w formacie JSON
 ksef-cli invoice list --profile moja-firma --output json
+
+# Wybór okresu
+ksef-cli invoice list --profile moja-firma --from 2026-02-01 --to 2026-03-31
+
+# Wybór typu faktur
+ksef-cli invoice list --profile moja-firma --subject subject2
+
+# Paginacja
+ksef-cli invoice list --profile moja-firma --pageoffset 2 --pagesize 50
 ```
 
 Przykładowe wyjście tekstowe:

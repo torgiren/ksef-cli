@@ -14,7 +14,6 @@ const (
 type InvoiceQuery struct {
 	From        time.Time
 	To          time.Time
-	PageSize    int32
 	SubjectType SubjectType
 }
 
