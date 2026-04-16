@@ -9,6 +9,8 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/torgiren/ksef-cli/pkg/ksef"
+
+	"github.com/jedib0t/go-pretty/v6/table"
 )
 
 func cmdToQuery(cmd *cobra.Command) (ksef.InvoiceQuery, error) {
@@ -142,13 +144,17 @@ func printAsJSON(invoices []ksef.Invoice) {
 }
 
 func printAsText(invoices []ksef.Invoice) {
+	t := table.NewWriter()
+	t.SetOutputMirror(os.Stdout)
+	t.AppendHeader(table.Row{"Data", "Faktura", "Brutto", "Netto", "Kontrahent"})
 	for _, invoice := range invoices {
-		fmt.Printf("Invoice: %s, Date: %s, Gross: %.2f, Net: %.2f, Seller: %s\n",
-			invoice.InvoiceNumber,
+		t.AppendRow(table.Row{
 			invoice.PermanentStorageDate.Format("2006-01-02"),
-			invoice.GrossAmount,
-			invoice.NetAmount,
+			invoice.InvoiceNumber,
+			fmt.Sprintf("%.2f", invoice.GrossAmount),
+			fmt.Sprintf("%.2f", invoice.NetAmount),
 			invoice.SellerName,
-		)
+		})
 	}
+	t.Render()
 }
