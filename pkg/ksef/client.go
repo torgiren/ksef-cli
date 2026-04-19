@@ -20,6 +20,8 @@ type Tokens struct {
 type Client interface {
 	Login(ctx context.Context, nip string, token string) (*Tokens, error)
 	GetInvoices(ctx context.Context, query InvoiceQuery, page InvoicePage) ([]Invoice, error)
+	GetInvoiceDetails(ctx context.Context, invoiceNumber string) (*InvoiceDetails, error)
+	GetInvoiceDetailsRaw(ctx context.Context, invoiceNumber string) ([]byte, error)
 	RefreshTokens(ctx context.Context) (*Tokens, error)
 
 	SetTokens(tokens *Tokens)
