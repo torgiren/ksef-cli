@@ -346,9 +346,9 @@ func (c *ksefClient) GetInvoiceDetails(ctx context.Context, invoiceNumber string
 	}
 	slog.Debug("raw invoice details fetched", "length", len(invoiceRaw))
 	invoiceDetails, err := invoiceXMLToDetails(invoiceRaw)
-	invoiceDetails.KsefNumber = invoiceNumber
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse invoice XML: %w", err)
 	}
+	invoiceDetails.KsefNumber = invoiceNumber
 	return invoiceDetails, nil
 }
