@@ -271,31 +271,31 @@ func invoiceXMLToDetails(invoiceXML []byte) (*InvoiceDetails, error) {
 	}
 	netto0, err := stringToFloat(invoice.Fa.KwotaNetto0)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse Netto 0% amount: %w", err)
+		return nil, fmt.Errorf("failed to parse Netto 0%% amount: %w", err)
 	}
 	netto5, err := stringToFloat(invoice.Fa.KwotaNetto5)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse Netto 5% amount: %w", err)
+		return nil, fmt.Errorf("failed to parse Netto 5%% amount: %w", err)
 	}
 	netto8, err := stringToFloat(invoice.Fa.KwotaNetto8)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse Netto 8% amount: %w", err)
+		return nil, fmt.Errorf("failed to parse Netto 8%% amount: %w", err)
 	}
 	netto23, err := stringToFloat(invoice.Fa.KwotaNetto23)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse Netto 23% amount: %w", err)
+		return nil, fmt.Errorf("failed to parse Netto 23%% amount: %w", err)
 	}
 	vat5, err := stringToFloat(invoice.Fa.KwotaVAT5)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse VAT 5% amount: %w", err)
+		return nil, fmt.Errorf("failed to parse VAT 5%% amount: %w", err)
 	}
 	vat8, err := stringToFloat(invoice.Fa.KwotaVAT8)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse VAT 8% amount: %w", err)
+		return nil, fmt.Errorf("failed to parse VAT 8%% amount: %w", err)
 	}
 	vat23, err := stringToFloat(invoice.Fa.KwotaVAT23)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse VAT 23% amount: %w", err)
+		return nil, fmt.Errorf("failed to parse VAT 2%3% amount: %w", err)
 	}
 	grossAmount, err := stringToFloat(invoice.Fa.KwotaBrutto)
 	if err != nil {
