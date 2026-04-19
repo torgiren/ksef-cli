@@ -167,6 +167,9 @@ func stringToFloat(s string) (float64, error) {
 	if s == "" {
 		return 0, nil
 	}
+	if s == "zw" || s == "ZW" {
+		return -1, nil
+	}
 	f, err := strconv.ParseFloat(s, 64)
 	if err != nil {
 		return 0, fmt.Errorf("failed to parse float from string '%s': %w", s, err)

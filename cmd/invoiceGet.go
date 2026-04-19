@@ -68,6 +68,10 @@ var invoiceGetCmd = &cobra.Command{
 		ti.SetStyle(style)
 		ti.AppendHeader(table.Row{"LP.", "NAZWA TOWARU/USŁUGI", "J.M.", "ILOŚĆ", "CENA NETTO", "WARTOŚĆ NETTO", "STAWKA VAT", "KWOTA VAT", "CENA BRUTTO", "WARTOŚĆ BRUTTO"})
 		for _, item := range invoice.Content.Items {
+			vatRate := fmt.Sprintf("%.0f%%", item.VatRate)
+			if item.VatRate == -1 {
+				vatRate = "ZW"
+			}
 			ti.AppendRow(table.Row{
 				item.OrderNumber,
 				item.Description,
@@ -75,7 +79,7 @@ var invoiceGetCmd = &cobra.Command{
 				item.Quantity,
 				item.NetPrice,
 				item.NetAmount,
-				item.VatRate,
+				vatRate,
 				item.VatAmount,
 				item.GrossPrice,
 				item.GrossAmount,
