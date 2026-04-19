@@ -86,16 +86,25 @@ var invoiceGetCmd = &cobra.Command{
 			})
 		}
 		ti.AppendSeparator()
-		ti.AppendRows([]table.Row{
-			{"", "", "", "", "", "", "", "", "Netto ZW", invoice.Content.NettoExempt},
-			{"", "", "", "", "", "", "", "", "Netto 0%", invoice.Content.Netto0},
-			{"", "", "", "", "", "", "", "", "Netto 5%", invoice.Content.Netto5},
-			{"", "", "", "", "", "", "", "", "Vat 5%", invoice.Content.Vat5},
-			{"", "", "", "", "", "", "", "", "Netto 8%", invoice.Content.Netto8},
-			{"", "", "", "", "", "", "", "", "Vat 8%", invoice.Content.Vat8},
-			{"", "", "", "", "", "", "", "", "Netto 23%", invoice.Content.Netto23},
-			{"", "", "", "", "", "", "", "", "Vat 23%", invoice.Content.Vat23},
-		})
+		if invoice.Content.NettoExempt > 0 {
+			ti.AppendRow(table.Row{"", "", "", "", "", "", "", "", "Netto ZW", invoice.Content.NettoExempt})
+		}
+		if invoice.Content.Netto0 > 0 {
+			ti.AppendRow(table.Row{"", "", "", "", "", "", "", "", "Netto 0%", invoice.Content.Netto0})
+		}
+		if invoice.Content.Netto5 > 0 {
+			ti.AppendRow(table.Row{"", "", "", "", "", "", "", "", "Netto 5%", invoice.Content.Netto5})
+			ti.AppendRow(table.Row{"", "", "", "", "", "", "", "", "Vat 5%", invoice.Content.Vat5})
+		}
+		if invoice.Content.Netto8 > 0 {
+			ti.AppendRow(table.Row{"", "", "", "", "", "", "", "", "Netto 8%", invoice.Content.Netto8})
+			ti.AppendRow(table.Row{"", "", "", "", "", "", "", "", "Vat 8%", invoice.Content.Vat8})
+		}
+		if invoice.Content.Netto23 > 0 {
+			ti.AppendRow(table.Row{"", "", "", "", "", "", "", "", "Netto 23%", invoice.Content.Netto23})
+			ti.AppendRow(table.Row{"", "", "", "", "", "", "", "", "Vat 23%", invoice.Content.Vat23})
+		}
+
 		ti.AppendSeparator()
 		ti.AppendRow(table.Row{"", "", "", "", "", "", "", "", "Razem Brutto", invoice.Content.GrossAmount})
 		ti.SetColumnConfigs([]table.ColumnConfig{
