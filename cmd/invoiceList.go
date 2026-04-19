@@ -146,9 +146,10 @@ func printAsJSON(invoices []ksef.Invoice) {
 func printAsText(invoices []ksef.Invoice) {
 	t := table.NewWriter()
 	t.SetOutputMirror(os.Stdout)
-	t.AppendHeader(table.Row{"Data", "Faktura", "Brutto", "Netto", "Kontrahent"})
+	t.AppendHeader(table.Row{"Numer KSEF", "Data", "Faktura", "Brutto", "Netto", "Kontrahent"})
 	for _, invoice := range invoices {
 		t.AppendRow(table.Row{
+			invoice.KsefNumber,
 			invoice.PermanentStorageDate.Format("2006-01-02"),
 			invoice.InvoiceNumber,
 			fmt.Sprintf("%.2f", invoice.GrossAmount),
