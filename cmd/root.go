@@ -29,6 +29,9 @@ var rootCmd = &cobra.Command{
 API produkcyjne: https://api.ksef.mf.gov.pl/v2
 API testowe:     https://api-test.ksef.mf.gov.pl/v2`,
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		if cmd.Annotations["SkipSetup"] == "true" {
+			return nil
+		}
 		ctx = context.Background()
 		slog.Debug("load config")
 		profileConfig, err := profile.LoadConfig(cmd.Flag("configFile").Value.String())
