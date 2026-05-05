@@ -127,8 +127,9 @@ var invoiceListCmd = &cobra.Command{
 func init() {
 	invoiceCmd.AddCommand(invoiceListCmd)
 
-	invoiceListCmd.Flags().String("from", time.Now().AddDate(0, -3, 0).Format("2006-01-02"), "Data początkowa (format: RRRR-MM-DD)")
-	invoiceListCmd.Flags().String("to", time.Now().Format("2006-01-02"), "Data końcowa (format: RRRR-MM-DD)")
+	to := time.Now().AddDate(0, 0, 1)
+	invoiceListCmd.Flags().String("from", to.AddDate(0, -3, 0).Format("2006-01-02"), "Data początkowa (format: RRRR-MM-DD)")
+	invoiceListCmd.Flags().String("to", to.Format("2006-01-02"), "Data końcowa (format: RRRR-MM-DD)")
 	invoiceListCmd.Flags().String("subject", "subject2", "Typ podmiotu (subject1, subject2, subject3, authorized)")
 	invoiceListCmd.Flags().Int32("pagesize", 100, "Liczba faktur na stronę")
 	invoiceListCmd.Flags().Int32("pageoffset", 0, "Numer strony (offset)")
