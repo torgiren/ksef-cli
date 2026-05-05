@@ -7,7 +7,7 @@ import (
 )
 
 var (
-    version = "dev"
+	version   = "dev"
 	buildTime = "unknown"
 )
 
